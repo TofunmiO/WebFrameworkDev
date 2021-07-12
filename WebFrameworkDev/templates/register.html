@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+<!--div - adds CSS styling-->
+    <div class="content-section">
+      <!--POST sends the information of the form-->
+        <form method="POST" action="">
+          <!--line 8 passes in your SECRET_KEY-->
+            {{ form.hidden_tag() }}
+          <!--line 10 adds more CSS styling-->
+            <fieldset class="form-group">
+              <!--line 12 seperates a form element-->
+               <div class="form-group">
+                 <!--line 14 indicates you are passing something in. This case we passing form(forms.py)-->
+                 {{ form.username.label(class="form-control-label") }}
+                 <!-- if block in jinja catches data validation errors and shows them to the user:-->
+                 {% if form.username.errors %}
+                  <!--if there are no validation errors, add the StringField specified in forms.py without any messages-->
+                 {{ form.username(class="form-control form-control-lg is-invalid") }}
+                 <div class="invalid-feedback">
+                   {% for error in form.username.errors%}
+                   <span>{{error}}</span>
+                   {% endfor %}
+                 </div>
+                 {% else %}
+                     {{ form.username(class="form-control form-control-lg") }}
+                 {% endif %}
+              </div>
+              <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {% if form.email.errors %}
+                {{ form.email(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                  {% for error in form.email.errors%}
+                  <span>{{error}}</span>
+                  {% endfor %}
+                </div>
+                {% else %}
+                  {{ form.email(class="form-control form-control-lg") }}
+                {% endif %}
+              </div>
+              <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                {% if form.password.errors %}
+                {{ form.password(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                  {% for error in form.password.errors%}
+                  <span>{{error}}</span>
+                  {% endfor %}
+                </div>
+                {% else %}
+                {{ form.password(class="form-control form-control-lg") }}
+                {% endif %}
+              </div>
+              <div class="form-group">
+                {{ form.confirm_password.label(class="form-control-label") }}
+                {% if form.confirm_password.errors %}
+                {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                  {% for error in form.confirm_password.errors%}
+                  <span>{{error}}</span>
+                  {% endfor %}
+                </div>
+                {% else %}
+                {{ form.confirm_password(class="form-control form-control-lg") }}
+                {% endif %}
+              </div>
+          </fieldset>
+          <div class="form-group">
+             {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+         </form>
+     </div>
+ {% endblock content %}

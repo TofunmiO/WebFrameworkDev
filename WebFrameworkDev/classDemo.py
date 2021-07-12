@@ -1,13 +1,14 @@
 from flask import Flask, render_template, url_for, flash, redirect
-from falsk_wtf import FlaskForm
-from wtforms import Stringfield, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+# from flask_wtf import FlaskForm
+# from wtforms import StringField, PasswordField, SubmitField, BooleanField
+# from wtforms.validators import DataRequired, Length, Email, EqualTo
 from forms import RegistrationForm
 from flask_sqlalchemy import SQLAlchemy
+# import secrets
 
 app = Flask(__name__)                    # this gets the name of the file so Flask knows it's name
-app.config['SECRET KEY'] ='669ff589765fb1019b125588d2d85a50'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlie:///site.db'
+app.config['SECRET_KEY'] = '21d5e83a343bebf7c4174dd694091ffd'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db' #location in flask. when you run it create site.db file
 
 db = SQLAlchemy(app)
 
@@ -37,9 +38,15 @@ def home():
   
 @app.route("/register", methods=['GET', 'POST']) #getting info from user and posting  
 def register():
-  form= RegistrationForm()
-    return render_template('register_html', subtitle ='Register', form=form)
-
+    form = RegistrationForm()
+    if form.validate_on_submit(): # checks if entries are valid
+        user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        print(user)
+        db.session.add(user)
+        db.session.commit()
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('home')) # if so - send to home page
+    return render_template('register.html', title='Register', form=form)
 
 if __name__ == '__main__':               # this should always be at the end
     app.run(debug=True, host="0.0.0.0")
