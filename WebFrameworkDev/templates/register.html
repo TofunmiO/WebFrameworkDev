@@ -1,20 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-<!--div - adds CSS styling-->
     <div class="content-section">
-      <!--POST sends the information of the form-->
         <form method="POST" action="">
-          <!--line 8 passes in your SECRET_KEY-->
             {{ form.hidden_tag() }}
-          <!--line 10 adds more CSS styling-->
             <fieldset class="form-group">
-              <!--line 12 seperates a form element-->
                <div class="form-group">
-                 <!--line 14 indicates you are passing something in. This case we passing form(forms.py)-->
                  {{ form.username.label(class="form-control-label") }}
-                 <!-- if block in jinja catches data validation errors and shows them to the user:-->
                  {% if form.username.errors %}
-                  <!--if there are no validation errors, add the StringField specified in forms.py without any messages-->
                  {{ form.username(class="form-control form-control-lg is-invalid") }}
                  <div class="invalid-feedback">
                    {% for error in form.username.errors%}
