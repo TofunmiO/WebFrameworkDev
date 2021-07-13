@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      {{ turbo() }}  
+  </head>
     <body>
       <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
@@ -19,15 +21,17 @@
               <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" href="/">Home</a>
                 <a class="nav-item nav-link" href="/about">About</a>
+                <a class="nav-item nav-link" href="/register">Register</a>
+                <a class="nav-item nav-link" href="/captions">Caption</a>
               </div>
             </div>
           </div>
         </nav>
       </header>
-      <main role="main" class="container">
+      <main id = 'main' role="main" class="container">
         <div class="row">
           <div class="col-md-8">
-            <h1>SEO Tech Dev. Web Framework Intro</h1>
+            <h2>SEO Tech Dev. Web Framework</h2>
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category, message in messages %}
@@ -42,5 +46,4 @@
       </main>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>
-  </head>
 </html>
