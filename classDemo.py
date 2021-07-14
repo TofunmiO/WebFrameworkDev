@@ -45,8 +45,9 @@ def about():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit(): # checks if entries are valid
-        pw_hash = bcrypt.generate_password_hash(password).decode('uft-8')
-        bcrypt.check_password_hash(pw_hash, password)
+        pw_hash = bcrypt.generate_password_hash(password=form.password.data)
+        bcrypt.check_password_hash(pw_hash, password=form.password.data)
+        print(pw_hash)
         user = User(username=form.username.data, email=form.email.data, password=form.password.data)
         print(user)
         db.session.add(user)
@@ -54,6 +55,21 @@ def register():
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('home')) # if so - send to home page
     return render_template('register.html', title='Register', form=form)
+
+@app.route("/login", methods=['GET', 'POST'])   
+def login():
+    form = LoginForm()
+    if form.validate_on_submit(): 
+        pw_hash = bcrypt.generate_password_hash(password=form.password.data)
+        bcrypt.check_password_hash(pw_hash, password=form.password.data)
+        print(pw_hash)
+        user = User(username=form.username.data, password=form.password.data)
+        print(user)
+        db.session.add(user)
+        db.session.commit()
+        flash(f'Successful login for {form.username.data}!', 'success')
+        return redirect(url_for('home')) # if so - send to home page
+    return render_template('login.html', title='Login', form=form)
   
 @app.route("/captions")
 def captions():
@@ -93,6 +109,7 @@ def update_captions():
 
             # forcefully updating captionsPane with caption
             turbo.push(turbo.replace(render_template('captionsPane.html'), 'load'))
+            
 
 if __name__ == '__main__':               # this should always be at the end
     app.run(debug=True, host="0.0.0.0")
