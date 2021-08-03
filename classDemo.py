@@ -48,14 +48,19 @@ def about():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit(): # checks if entries are valid
-        pw_hash = bcrypt.generate_password_hash(password=form.password.data)
+        pw_hash = (bcrypt.generate_password_hash(password=form.password.data).decode('uft-8')
         bcrypt.check_password_hash(pw_hash, password=form.password.data)
         user = User(username=form.username.data, email=form.email.data, password=pw_hash)
-        print(user)
-        db.session.add(user)
-        db.session.commit()
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home')) # if so - send to home page
+#         print(user)
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except exc.IntegrityError:
+            db.session.rollback()
+            flash(f'Username or email account already exists!', 'success')
+        else:
+            flash(f'Account created for {form.username.data}!', 'success')
+            return redirect(url_for('home')) # if so - send to home page
     return render_template('register.html', title='Register', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])   
